@@ -1,0 +1,1118 @@
+/* Reset e base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --hud-bg: rgba(15, 15, 20, 0.85);
+    --hud-border: rgba(255, 255, 255, 0.1);
+    --accent-color: #e10600;
+    --accent-glow: rgba(225, 6, 0, 0.5);
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-muted: rgba(255, 255, 255, 0.4);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #000;
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+#canvas-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+#canvas-container canvas {
+    display: block;
+}
+
+/* HUD - Interface */
+#hud {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.hud-panel {
+    background: var(--hud-bg);
+    border: 1px solid var(--hud-border);
+    border-radius: 8px;
+    padding: 15px;
+    backdrop-filter: blur(10px);
+    pointer-events: auto;
+}
+
+/* Informações do piloto */
+#driver-info {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    min-width: 280px;
+}
+
+.driver-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid var(--hud-border);
+}
+
+.driver-number {
+    font-size: 32px;
+    font-weight: 800;
+    background: var(--accent-color);
+    color: white;
+    padding: 5px 15px;
+    border-radius: 4px;
+    min-width: 60px;
+    text-align: center;
+}
+
+.driver-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.driver-name {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.driver-team {
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.driver-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-label {
+    display: block;
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.stat-value small {
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+
+/* ============================================
+   Torre de Classificação - Estilo F1 TV
+   ============================================ */
+#standings-tower {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 240px;
+    padding: 0;
+    overflow: hidden;
+}
+
+.standings-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    background: rgba(0, 0, 0, 0.5);
+    border-bottom: 1px solid var(--hud-border);
+}
+
+.standings-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--text-secondary);
+}
+
+.standings-lap {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.standings-list {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.standings-row {
+    display: flex;
+    align-items: center;
+    height: 26px;
+    padding: 0 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    transition: background 0.3s, transform 0.3s;
+    cursor: pointer;
+}
+
+.standings-row:hover {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.standings-row.selected {
+    background: rgba(225, 6, 0, 0.25);
+    border-left: 3px solid var(--accent-color);
+}
+
+.standings-position {
+    width: 22px;
+    font-size: 12px;
+    font-weight: 700;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.standings-team-color {
+    width: 3px;
+    height: 18px;
+    margin: 0 6px;
+    border-radius: 1px;
+}
+
+.standings-driver {
+    font-size: 12px;
+    font-weight: 600;
+    width: 40px;
+    letter-spacing: 0.5px;
+}
+
+.standings-gap {
+    flex: 1;
+    text-align: right;
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    color: var(--text-secondary);
+    padding-right: 4px;
+}
+
+.standings-tire {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-left: 4px;
+    flex-shrink: 0;
+}
+
+/* Cores dos compostos de pneu */
+.tire-soft {
+    background: #ff3333;
+    box-shadow: 0 0 4px rgba(255, 51, 51, 0.5);
+}
+
+.tire-medium {
+    background: #ffcc00;
+    box-shadow: 0 0 4px rgba(255, 204, 0, 0.5);
+}
+
+.tire-hard {
+    background: #ffffff;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+}
+
+.tire-intermediate {
+    background: #00cc00;
+    box-shadow: 0 0 4px rgba(0, 204, 0, 0.5);
+}
+
+.tire-wet {
+    background: #0099ff;
+    box-shadow: 0 0 4px rgba(0, 153, 255, 0.5);
+}
+
+.tire-unknown {
+    background: transparent;
+    border: 2px solid #666;
+}
+
+/* Animações de ultrapassagem */
+.standings-row.overtake-up {
+    animation: slideUp 0.4s ease-out;
+}
+
+.standings-row.overtake-down {
+    animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateY(26px);
+        background: rgba(0, 255, 0, 0.3);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideDown {
+    0% {
+        transform: translateY(-26px);
+        background: rgba(255, 0, 0, 0.3);
+    }
+    100% {
+        transform: translateY(0);
+    }
+}
+
+/* Flash de ultrapassagem */
+.standings-row.flash-green {
+    animation: flashGreen 0.5s ease-out;
+}
+
+.standings-row.flash-red {
+    animation: flashRed 0.5s ease-out;
+}
+
+@keyframes flashGreen {
+    0%, 100% { background: inherit; }
+    50% { background: rgba(0, 255, 0, 0.4); }
+}
+
+@keyframes flashRed {
+    0%, 100% { background: inherit; }
+    50% { background: rgba(255, 0, 0, 0.4); }
+}
+
+/* Controles de replay - Compactos */
+#replay-controls {
+    position: absolute;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 450px;
+    max-width: calc(100% - 40px);
+    padding: 10px 15px;
+}
+
+.timeline-container {
+    margin-bottom: 8px;
+}
+
+#timeline {
+    width: 100%;
+    height: 5px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+#timeline::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 12px;
+    height: 12px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    cursor: grab;
+    box-shadow: 0 0 8px var(--accent-glow);
+}
+
+#timeline::-webkit-slider-thumb:active {
+    cursor: grabbing;
+}
+
+.time-display {
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 4px;
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+}
+
+#total-time {
+    color: var(--text-muted);
+}
+
+.control-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.control-btn {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.control-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.control-btn svg {
+    width: 14px;
+    height: 14px;
+    fill: var(--text-primary);
+}
+
+.control-btn.play-btn {
+    width: 40px;
+    height: 40px;
+    background: var(--accent-color);
+}
+
+.control-btn.play-btn:hover {
+    background: #ff1a1a;
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
+.control-btn.play-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.speed-control {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-left: 12px;
+}
+
+.speed-control label {
+    font-size: 10px;
+    color: var(--text-secondary);
+}
+
+.speed-control select {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--hud-border);
+    color: var(--text-primary);
+    padding: 3px 6px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 11px;
+}
+
+/* ============================================
+   Controles de Câmera - Compactos (topo)
+   ============================================ */
+#camera-controls.compact {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: auto;
+    padding: 8px 12px;
+}
+
+.camera-buttons-compact {
+    display: flex;
+    gap: 8px;
+}
+
+.camera-btn-icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.camera-btn-icon svg {
+    width: 20px;
+    height: 20px;
+    fill: var(--text-secondary);
+    stroke: var(--text-secondary);
+    stroke-width: 1;
+}
+
+.camera-btn-icon:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.camera-btn-icon:hover svg {
+    fill: var(--text-primary);
+    stroke: var(--text-primary);
+}
+
+.camera-btn-icon.active {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+}
+
+.camera-btn-icon.active svg {
+    fill: white;
+    stroke: white;
+}
+
+/* ============================================
+   Telemetria F1 TV Style (esquerda inferior)
+   ============================================ */
+#telemetry-f1 {
+    position: absolute;
+    bottom: 100px;
+    left: 20px;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    min-width: 140px;
+}
+
+.telemetry-bars {
+    display: flex;
+    gap: 12px;
+    height: 80px;
+}
+
+.telemetry-bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.telemetry-bar {
+    width: 24px;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+.telemetry-bar-fill {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 0%;
+    transition: height 0.05s ease-out;
+    border-radius: 4px;
+}
+
+.telemetry-bar.throttle .telemetry-bar-fill {
+    background: linear-gradient(to top, #00cc00, #00ff00);
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+.telemetry-bar.brake .telemetry-bar-fill {
+    background: linear-gradient(to top, #cc0000, #ff0000);
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);
+}
+
+.telemetry-bar-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+}
+
+.telemetry-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.gear-display {
+    width: 50px;
+    height: 50px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.gear-display .gear-value {
+    font-size: 32px;
+    font-weight: 800;
+    color: var(--text-primary);
+    font-family: 'Arial Black', sans-serif;
+}
+
+.drs-badge {
+    padding: 6px 12px;
+    background: rgba(100, 100, 100, 0.5);
+    border-radius: 4px;
+    transition: all 0.15s;
+}
+
+.drs-badge span {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+}
+
+.drs-badge.active {
+    background: #00ff00;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.6);
+}
+
+.drs-badge.active span {
+    color: #000;
+}
+
+.speed-display {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.speed-value-large {
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--text-primary);
+    font-family: 'Arial Black', sans-serif;
+    line-height: 1;
+}
+
+.speed-unit {
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+/* Minimapa (abaixo das infos do piloto) */
+#minimap {
+    position: absolute;
+    top: 180px;
+    left: 20px;
+    padding: 10px;
+}
+
+#minimap-canvas {
+    width: 200px;
+    height: 150px;
+    border-radius: 4px;
+}
+
+/* Loading screen */
+#loading-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f0f1a 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    transition: opacity 0.5s;
+}
+
+#loading-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.loading-content {
+    text-align: center;
+}
+
+.loading-spinner {
+    width: 60px;
+    height: 60px;
+    border: 4px solid rgba(255, 255, 255, 0.1);
+    border-top-color: var(--accent-color);
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading-content h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.loading-content p {
+    color: var(--text-secondary);
+    margin-bottom: 20px;
+}
+
+.loading-bar {
+    width: 300px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.loading-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent-color);
+    transition: width 0.3s;
+}
+
+/* Scrollbar customizada */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+/* ============================================
+   Labels dos Carros (CSS2DRenderer)
+   ============================================ */
+.car-label {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    background: rgba(0, 0, 0, 0.75);
+    padding: 3px 8px 3px 4px;
+    border-radius: 3px;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    white-space: nowrap;
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.car-label-color {
+    width: 4px;
+    height: 16px;
+    border-radius: 2px;
+    flex-shrink: 0;
+}
+
+.car-label-code {
+    font-size: 11px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.5px;
+}
+
+/* ============================================
+   Sidebar de Widgets
+   ============================================ */
+#widget-sidebar {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 200;
+    display: flex;
+    flex-direction: column;
+    background: var(--hud-bg);
+    border-radius: 0 8px 8px 0;
+    border: 1px solid var(--hud-border);
+    border-left: none;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+}
+
+#widget-sidebar .sidebar-toggle {
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--hud-border);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    transition: all 0.2s;
+}
+
+#widget-sidebar .sidebar-toggle:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+#widget-sidebar .sidebar-icons {
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+    gap: 6px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+#widget-sidebar.collapsed .sidebar-icons {
+    display: none;
+}
+
+#widget-sidebar.collapsed {
+    border-radius: 0 8px 8px 0;
+}
+
+.widget-toggle-btn {
+    width: 36px;
+    height: 36px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.2s;
+    color: var(--text-secondary);
+}
+
+.widget-toggle-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.2);
+}
+
+.widget-toggle-btn.active {
+    background: var(--accent-color);
+    border-color: var(--accent-color);
+    color: white;
+}
+
+.widget-toggle-btn svg {
+    width: 18px;
+    height: 18px;
+    fill: currentColor;
+}
+
+/* ============================================
+   Container de Widgets
+   ============================================ */
+#widgets-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 50;
+    pointer-events: none;
+}
+
+/* ============================================
+   Widget Base
+   ============================================ */
+.widget {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    background: var(--hud-bg);
+    border: 1px solid var(--hud-border);
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    pointer-events: auto;
+    min-width: 180px;
+    max-width: 500px;
+    user-select: none;
+}
+
+.widget-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid var(--hud-border);
+    border-radius: 8px 8px 0 0;
+    cursor: grab;
+}
+
+.widget-header:active {
+    cursor: grabbing;
+}
+
+.widget-title {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+}
+
+.widget-close {
+    width: 24px;
+    height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    transition: all 0.2s;
+}
+
+.widget-close:hover {
+    background: rgba(255, 0, 0, 0.3);
+    color: #ff6666;
+}
+
+.widget-content {
+    padding: 12px;
+    overflow: auto;
+    max-height: 400px;
+}
+
+/* Widget sendo arrastado */
+.widget.dragging {
+    opacity: 0.9;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+    transform: scale(1.02);
+}
+
+/* ============================================
+   Widgets Específicos
+   ============================================ */
+
+/* Lap Times Widget */
+.lap-times-widget .lap-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.lap-times-widget .lap-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.lap-times-widget .lap-time {
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Courier New', monospace;
+}
+
+.lap-times-widget .lap-delta {
+    font-size: 12px;
+    margin-left: 8px;
+}
+
+.lap-times-widget .lap-delta.faster {
+    color: #00ff00;
+}
+
+.lap-times-widget .lap-delta.slower {
+    color: #ff6666;
+}
+
+.lap-times-widget .sectors {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--hud-border);
+}
+
+.lap-times-widget .sector {
+    flex: 1;
+    text-align: center;
+}
+
+.lap-times-widget .sector-bar {
+    height: 6px;
+    border-radius: 3px;
+    margin-bottom: 4px;
+}
+
+.lap-times-widget .sector-bar.purple {
+    background: #9933ff;
+    box-shadow: 0 0 8px rgba(153, 51, 255, 0.5);
+}
+
+.lap-times-widget .sector-bar.green {
+    background: #00cc00;
+    box-shadow: 0 0 8px rgba(0, 204, 0, 0.5);
+}
+
+.lap-times-widget .sector-bar.yellow {
+    background: #ffcc00;
+}
+
+.lap-times-widget .sector-label {
+    font-size: 10px;
+    color: var(--text-muted);
+}
+
+/* Tire Strategy Widget */
+.tire-strategy-widget .strategy-driver {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 0;
+}
+
+.tire-strategy-widget .driver-code {
+    width: 35px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.tire-strategy-widget .strategy-bar {
+    flex: 1;
+    height: 14px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    display: flex;
+    overflow: hidden;
+}
+
+.tire-strategy-widget .stint {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8px;
+    font-weight: 600;
+    color: #000;
+}
+
+.tire-strategy-widget .stint.soft {
+    background: #ff3333;
+}
+
+.tire-strategy-widget .stint.medium {
+    background: #ffcc00;
+}
+
+.tire-strategy-widget .stint.hard {
+    background: #ffffff;
+}
+
+.tire-strategy-widget .stint.intermediate {
+    background: #00cc00;
+}
+
+.tire-strategy-widget .stint.wet {
+    background: #0099ff;
+}
+
+/* Battles Widget */
+.battles-widget .battle-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px;
+    margin-bottom: 6px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 4px;
+    border-left: 3px solid;
+}
+
+.battles-widget .battle-row.drs-zone {
+    border-left-color: #00ff00;
+}
+
+.battles-widget .battle-row.close {
+    border-left-color: #ffcc00;
+}
+
+.battles-widget .battle-row.normal {
+    border-left-color: #666;
+}
+
+.battles-widget .battle-drivers {
+    flex: 1;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.battles-widget .battle-gap {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.battles-widget .drs-badge {
+    font-size: 9px;
+    padding: 2px 6px;
+    background: #00ff00;
+    color: #000;
+    font-weight: 700;
+    border-radius: 3px;
+}
+
+/* Position Chart Widget */
+.position-chart-widget canvas {
+    width: 100%;
+    height: 200px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    #driver-selector {
+        display: none;
+    }
+
+    #replay-controls {
+        width: calc(100% - 40px);
+    }
+
+    #camera-controls {
+        display: none;
+    }
+
+    .driver-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

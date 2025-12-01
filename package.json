@@ -1,0 +1,20 @@
+{
+  "name": "f1-3d-race-replay",
+  "version": "1.0.0",
+  "description": "Visualizador 3D de corridas de F1 com dados do FastF1",
+  "type": "module",
+  "scripts": {
+    "dev": "npx serve frontend -p 3000",
+    "extract-data": "cd data-extractor && python extract_race_data.py"
+  },
+  "keywords": [
+    "f1",
+    "formula1",
+    "threejs",
+    "3d",
+    "racing",
+    "visualization"
+  ],
+  "author": "",
+  "license": "MIT"
+}
