@@ -12,7 +12,11 @@
       "Bash(curl:*)",
       "WebFetch(domain:openf1.org)",
       "Bash(dir:*)",
-      "Bash(git init:*)"
+      "Bash(git init:*)",
+      "Bash(find:*)",
+      "Bash(xcopy:*)",
+      "Bash(cmd /c \"xcopy C:\\Users\\sergio.augusto\\Documents\\form1\\frontend\\assets\\models C:\\Users\\sergio.augusto\\Documents\\form1\\f1-replay-app\\assets\\models\\ /E /I /Y\")",
+      "Bash(npm install)"
     ],
     "deny": [],
     "ask": []

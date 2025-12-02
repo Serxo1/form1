@@ -1,0 +1,143 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Base styles */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.3);
+  }
+}
+
+/* Components */
+@layer components {
+  .glass-panel {
+    @apply bg-f1-dark/90 backdrop-blur-md border border-white/10 rounded-lg shadow-xl;
+  }
+
+  .widget {
+    @apply glass-panel absolute cursor-move select-none;
+  }
+
+  .widget-header {
+    @apply flex items-center justify-between px-3 py-2 border-b border-white/10 cursor-grab active:cursor-grabbing;
+  }
+
+  .widget-title {
+    @apply text-sm font-semibold text-white/90;
+  }
+
+  .widget-close {
+    @apply w-5 h-5 flex items-center justify-center rounded hover:bg-white/10 text-white/50 hover:text-white/90 transition-colors cursor-pointer;
+  }
+
+  .widget-content {
+    @apply p-3;
+  }
+
+  .control-btn {
+    @apply w-10 h-10 flex items-center justify-center rounded-lg bg-white/5 hover:bg-white/10 text-white/70 hover:text-white transition-all;
+  }
+
+  .control-btn.active {
+    @apply bg-f1-red text-white;
+  }
+
+  .sidebar-btn {
+    @apply w-10 h-10 flex items-center justify-center rounded-lg hover:bg-white/10 text-white/70 hover:text-white transition-all text-lg;
+  }
+
+  .sidebar-btn.active {
+    @apply bg-white/10 text-white;
+  }
+
+  /* Driver label in 3D scene */
+  .driver-label {
+    @apply px-1.5 py-0.5 text-xs font-bold rounded bg-black/70 text-white whitespace-nowrap;
+  }
+
+  /* Tire compound badges */
+  .tire-soft {
+    @apply bg-tire-soft text-white;
+  }
+  .tire-medium {
+    @apply bg-tire-medium text-black;
+  }
+  .tire-hard {
+    @apply bg-tire-hard text-black;
+  }
+  .tire-intermediate {
+    @apply bg-tire-intermediate text-white;
+  }
+  .tire-wet {
+    @apply bg-tire-wet text-white;
+  }
+
+  /* Standings row */
+  .standings-row {
+    @apply flex items-center gap-2 px-2 py-1 rounded hover:bg-white/5 transition-colors cursor-pointer;
+  }
+
+  .standings-row.selected {
+    @apply bg-white/10;
+  }
+
+  .standings-row.overtake-gain {
+    @apply animate-flash-green;
+  }
+
+  .standings-row.overtake-loss {
+    @apply animate-flash-red;
+  }
+
+  /* Telemetry bars */
+  .telemetry-bar {
+    @apply h-2 rounded-full bg-white/10 overflow-hidden;
+  }
+
+  .telemetry-bar-fill {
+    @apply h-full rounded-full transition-all duration-75;
+  }
+
+  .throttle-bar .telemetry-bar-fill {
+    @apply bg-green-500;
+  }
+
+  .brake-bar .telemetry-bar-fill {
+    @apply bg-red-500;
+  }
+}
+
+/* Utilities */
+@layer utilities {
+  .dragging {
+    @apply opacity-80 shadow-2xl z-50;
+  }
+}
